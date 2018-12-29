@@ -9,6 +9,11 @@ class PostsController < ApplicationController
   def edit
     @group = Group.find(params[:group_id])
     @post = Post.find(params[:id])
+
+    if current_user != @post.user
+      redirect_to root_path, alert: "You Have No Permission"
+    end
+
   end
 
   def create
@@ -27,6 +32,11 @@ class PostsController < ApplicationController
   def update
     @group = Group.find(params[:group_id])
     @post = Post.find(params[:id])
+
+    if current_user != @post.user
+      redirect_to root_path, alert: "You Have No Permission"
+    end
+
     if @post.update(post_params)
       redirect_to account_posts_path, notice: "Post Updated"
     else
